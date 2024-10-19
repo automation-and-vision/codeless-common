@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+package codeless_grpc;
+
+option go_package = "grpc/codeless_grpc";
