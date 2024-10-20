@@ -1,6 +1,10 @@
 package view_model
 
 type ErrorResponse struct {
-	Error string `json:"error"`
-	Code  int    `json:"-"`
+	Err  string `json:"error"`
+	Code int    `json:"-"`
+}
+
+func (r ErrorResponse) Error() string {
+	return r.Err
 }
