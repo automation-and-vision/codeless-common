@@ -9,10 +9,10 @@ type IDispatcher interface {
 	Dispatch(action IAction)
 }
 
-type dispatcherFuncType func(ctx *HandleContext) *HandleResponse
+type DispatcherFuncType func(ctx *HandleContext) *HandleResponse
 
 type StateDispatcher[A IAction] struct {
-	Reducer map[string]dispatcherFuncType
+	Reducer map[string]DispatcherFuncType
 	Handler *interface{}
 }
 
