@@ -5,10 +5,11 @@ package codeless_grpc;
 option go_package = "grpc/codeless_grpc";
 
 service TelegramDesignService {
-  rpc CreateDesign (CreateDesignRequest) returns (ErrorResponse) {}
+  rpc CreateDesign (IdDesignRequest) returns (ErrorResponse) {}
+  rpc DeleteDesign (IdDesignRequest) returns (ErrorResponse) {}
 }
 
-message CreateDesignRequest {
+message IdDesignRequest {
   string id = 1;
 }
 

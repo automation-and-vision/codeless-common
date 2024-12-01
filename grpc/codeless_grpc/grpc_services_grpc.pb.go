@@ -20,13 +20,15 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	TelegramDesignService_CreateDesign_FullMethodName = "/codeless_grpc.TelegramDesignService/CreateDesign"
+	TelegramDesignService_DeleteDesign_FullMethodName = "/codeless_grpc.TelegramDesignService/DeleteDesign"
 )
 
 // TelegramDesignServiceClient is the client API for TelegramDesignService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TelegramDesignServiceClient interface {
-	CreateDesign(ctx context.Context, in *CreateDesignRequest, opts ...grpc.CallOption) (*ErrorResponse, error)
+	CreateDesign(ctx context.Context, in *IdDesignRequest, opts ...grpc.CallOption) (*ErrorResponse, error)
+	DeleteDesign(ctx context.Context, in *IdDesignRequest, opts ...grpc.CallOption) (*ErrorResponse, error)
 }
 
 type telegramDesignServiceClient struct {
@@ -37,10 +39,20 @@ func NewTelegramDesignServiceClient(cc grpc.ClientConnInterface) TelegramDesignS
 	return &telegramDesignServiceClient{cc}
 }
 
-func (c *telegramDesignServiceClient) CreateDesign(ctx context.Context, in *CreateDesignRequest, opts ...grpc.CallOption) (*ErrorResponse, error) {
+func (c *telegramDesignServiceClient) CreateDesign(ctx context.Context, in *IdDesignRequest, opts ...grpc.CallOption) (*ErrorResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ErrorResponse)
 	err := c.cc.Invoke(ctx, TelegramDesignService_CreateDesign_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *telegramDesignServiceClient) DeleteDesign(ctx context.Context, in *IdDesignRequest, opts ...grpc.CallOption) (*ErrorResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ErrorResponse)
+	err := c.cc.Invoke(ctx, TelegramDesignService_DeleteDesign_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +63,8 @@ func (c *telegramDesignServiceClient) CreateDesign(ctx context.Context, in *Crea
 // All implementations must embed UnimplementedTelegramDesignServiceServer
 // for forward compatibility.
 type TelegramDesignServiceServer interface {
-	CreateDesign(context.Context, *CreateDesignRequest) (*ErrorResponse, error)
+	CreateDesign(context.Context, *IdDesignRequest) (*ErrorResponse, error)
+	DeleteDesign(context.Context, *IdDesignRequest) (*ErrorResponse, error)
 	mustEmbedUnimplementedTelegramDesignServiceServer()
 }
 
@@ -62,8 +75,11 @@ type TelegramDesignServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedTelegramDesignServiceServer struct{}
 
-func (UnimplementedTelegramDesignServiceServer) CreateDesign(context.Context, *CreateDesignRequest) (*ErrorResponse, error) {
+func (UnimplementedTelegramDesignServiceServer) CreateDesign(context.Context, *IdDesignRequest) (*ErrorResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateDesign not implemented")
+}
+func (UnimplementedTelegramDesignServiceServer) DeleteDesign(context.Context, *IdDesignRequest) (*ErrorResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteDesign not implemented")
 }
 func (UnimplementedTelegramDesignServiceServer) mustEmbedUnimplementedTelegramDesignServiceServer() {}
 func (UnimplementedTelegramDesignServiceServer) testEmbeddedByValue()                               {}
@@ -87,7 +103,7 @@ func RegisterTelegramDesignServiceServer(s grpc.ServiceRegistrar, srv TelegramDe
 }
 
 func _TelegramDesignService_CreateDesign_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateDesignRequest)
+	in := new(IdDesignRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -99,7 +115,25 @@ func _TelegramDesignService_CreateDesign_Handler(srv interface{}, ctx context.Co
 		FullMethod: TelegramDesignService_CreateDesign_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TelegramDesignServiceServer).CreateDesign(ctx, req.(*CreateDesignRequest))
+		return srv.(TelegramDesignServiceServer).CreateDesign(ctx, req.(*IdDesignRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TelegramDesignService_DeleteDesign_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IdDesignRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TelegramDesignServiceServer).DeleteDesign(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TelegramDesignService_DeleteDesign_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TelegramDesignServiceServer).DeleteDesign(ctx, req.(*IdDesignRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -114,6 +148,10 @@ var TelegramDesignService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateDesign",
 			Handler:    _TelegramDesignService_CreateDesign_Handler,
+		},
+		{
+			MethodName: "DeleteDesign",
+			Handler:    _TelegramDesignService_DeleteDesign_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
