@@ -3,3 +3,16 @@ syntax = "proto3";
 package codeless_grpc;
 
 option go_package = "grpc/codeless_grpc";
+
+service TelegramDesignService {
+  rpc CreateDesign (CreateDesignRequest) returns (ErrorResponse) {}
+}
+
+message CreateDesignRequest {
+  string id = 1;
+}
+
+message ErrorResponse {
+  int32 error = 1;
+  string message = 2;
+}
